@@ -1,18 +1,27 @@
-# Millumin scripts
+# Millumin Scripts
 
-A collecction of JavaScript scripts for Millumin 5+.
+A collection of JavaScript scripts for [Millumin](https://www.millumin.com) 5+.
 
-## Content
+## Installation
 
-### Text 
+Download the latest installer from the [Releases](../../releases) page. The `.pkg` is signed and notarized — just double-click and follow the on-screen instructions.
 
-- **TextWithColumnName.js**: Updates a text layer with the name of the launched column.
-- **TextWithColumnIndex.js**: Updates a text layer with the index of the launched column.
-- **TextWithColumnIndexAndName.js**: Updates a text layer with the index and name of the launched column.
+Scripts are installed to:
 
-## Changelog
+```
+~/Library/Millumin/Scripts/io.benoitlahoz.millumin.scripts/
+```
 
-### 0.0.1
+## Scripts
 
-- Initial release
-- Added text scripts to update text layers with column name and index.
+### Text
+
+| Script | Description |
+|---|---|
+| `TextWithColumnName.js` | Updates a text layer with the name of the launched column |
+| `TextWithColumnIndex.js` | Updates a text layer with the index of the launched column |
+| `TextWithColumnIndexAndName.js` | Updates a text layer with the index and name of the launched column |
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) to learn how to add scripts or set up the release pipeline in a fork.
