@@ -20,6 +20,9 @@ USER_REGISTRY_DIR="$HOME/Library/Application Support/$IDENTIFIER_PREFIX"
 
 echo "🚀 Millumin Scripts Builder starting..."
 
+echo "📂 ROOT: $ROOT_DIR"
+echo "📂 SCRIPTS: $SCRIPTS_DIR"
+
 # -------------------------
 # CLEAN
 # -------------------------
