@@ -54,14 +54,22 @@ jobs:
                   security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
 
             # -------------------------
+            # DEBUG IDENTITIES (IMPORTANT)
+            # -------------------------
+            - name: List identities
+              run: security find-identity -v -p basic
+
+            # -------------------------
             # SIGN PACKAGE
             # -------------------------
             - name: Sign package
-              env:
-                  DEVELOPER_ID_INSTALLER: ${{ secrets.DEVELOPER_ID_INSTALLER }}
               run: |
+                  IDENTITY=$(security find-identity -v -p basic | grep "Developer ID Installer" | head -1 | sed 's/.*"\(.*\)".*/\1/')
+
+                  echo "Using identity: $IDENTITY"
+
                   productsign \
-                      --sign "$DEVELOPER_ID_INSTALLER" \
+                      --sign "$IDENTITY" \
                       installer/build/dist/Millumin-Scripts.pkg \
                       installer/build/dist/Millumin-Scripts-signed.pkg
 
