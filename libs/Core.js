@@ -1,0 +1,2 @@
+this.MS = this.MS || {}
+
