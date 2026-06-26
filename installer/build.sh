@@ -20,6 +20,8 @@ INSTALL_NAMESPACE="io.benoitlahoz.millumin.scripts"
 USER_SCRIPTS_DIR="Library/Millumin/Scripts/$INSTALL_NAMESPACE"
 USER_REGISTRY_DIR="Library/Application Support/$IDENTIFIER_PREFIX"
 
+PREFIX="MS-"
+
 echo "🚀 Millumin Scripts Builder starting..."
 echo "📂 ROOT: $ROOT_DIR"
 echo "📂 SCRIPTS: $SCRIPTS_DIR"
@@ -85,6 +87,8 @@ for dir in $FOUND_DIRS; do
     # REAL FILE NAME
     # -------------------------
     JS_FILENAME=$(basename "$JS_FILE")
+
+    JS_FILENAME="${PREFIX}${JS_FILENAME}"
 
     PACKAGE_ID="$IDENTIFIER_PREFIX.$JS_FILENAME"
 
