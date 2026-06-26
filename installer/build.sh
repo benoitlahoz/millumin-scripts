@@ -180,7 +180,7 @@ echo "🔧 Building final installer..."
 productbuild \
     --distribution "$DISTRIBUTION_FILE" \
     --package-path "$PKGS_DIR" \
-    "$DIST_DIR/Millumin-Scripts.pkg"
+    "$DIST_DIR/Millumin-Scripts-Unsigned.pkg"
 
 echo ""
 echo "✅ DONE"
