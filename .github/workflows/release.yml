@@ -76,16 +76,31 @@ jobs:
                       installer/build/dist/Millumin-Scripts.pkg
 
             # -------------------------
-            # NOTARIZE PACKAGE (FIX APPLIED HERE)
+            # WRITE APPLE API KEY (DEBUG SAFE)
+            # -------------------------
+            - name: Write key (debug safe)
+              env:
+                  ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+              run: |
+                  echo "$ASC_PRIVATE_KEY" > AuthKey.p8
+                  echo "File preview:"
+                  head -n 2 AuthKey.p8
+
+            # -------------------------
+            # NOTARIZE PACKAGE
             # -------------------------
             - name: Notarize package
               env:
                   ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
                   ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-                  ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
               run: |
-                  echo "$ASC_PRIVATE_KEY" > AuthKey.p8
-                  chmod 600 AuthKey.p8
+                  set -e
+
+                  # sanity check
+                  if ! grep -q "BEGIN PRIVATE KEY" AuthKey.p8; then
+                    echo "❌ Invalid .p8 format (not PEM)"
+                    exit 1
+                  fi
 
                   xcrun notarytool submit \
                       installer/build/dist/Millumin-Scripts.pkg \
