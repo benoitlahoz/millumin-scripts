@@ -82,7 +82,7 @@ jobs:
               env:
                   ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
               run: |
-                  echo "$ASC_PRIVATE_KEY" > AuthKey.p8
+                  printf '%s' "$ASC_PRIVATE_KEY" > AuthKey.p8
                   echo "File preview:"
                   head -n 2 AuthKey.p8
 
