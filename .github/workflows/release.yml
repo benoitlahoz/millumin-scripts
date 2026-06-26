@@ -32,7 +32,7 @@ jobs:
               run: ./installer/build.sh
 
             # -------------------------
-            # SIGN PACKAGE
+            # IMPORT CERTIFICATE
             # -------------------------
             - name: Import certificate
               env:
@@ -45,25 +45,36 @@ jobs:
                   security unlock-keychain -p "" build.keychain
 
                   security import cert.p12 \
-                    -k build.keychain \
-                    -P "" \
-                    -T /usr/bin/productsign \
-                    -T /usr/bin/codesign
+                      -k build.keychain \
+                      -P "" \
+                      -T /usr/bin/productsign \
+                      -T /usr/bin/codesign
 
                   security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
 
+            # -------------------------
+            # SIGN PACKAGE
+            # -------------------------
             - name: Sign package
+              env:
+                  DEVELOPER_ID_INSTALLER: ${{ secrets.DEVELOPER_ID_INSTALLER }}
               run: |
                   productsign \
-                    --sign "Developer ID Installer: Benoit LAHOZ (2997NPQWS5)" \
-                    installer/build/dist/Millumin-Scripts.pkg \
-                    installer/build/dist/Millumin-Scripts-signed.pkg
+                      --sign "$DEVELOPER_ID_INSTALLER" \
+                      installer/build/dist/Millumin-Scripts.pkg \
+                      installer/build/dist/Millumin-Scripts-signed.pkg
 
+            # -------------------------
+            # VERSION
+            # -------------------------
             - name: Get version
               id: version
               run: |
                   echo "VERSION=$(date +%Y.%m.%d.%H%M)" >> $GITHUB_OUTPUT
 
+            # -------------------------
+            # RELEASE
+            # -------------------------
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2
               with:
