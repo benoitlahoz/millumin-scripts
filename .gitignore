@@ -1,5 +1,6 @@
 # Internal
 /installer/build
+.private*
 private-*
 
 #MacOS
