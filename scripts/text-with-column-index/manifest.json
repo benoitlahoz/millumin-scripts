@@ -3,5 +3,6 @@
     "description": "A script that displays text with the current column index in a text layer.",
     "version": "1.0.0",
     "author": "Benoît Lahoz",
-    "category": "Text"
+    "category": "Text",
+    "install": true
 }

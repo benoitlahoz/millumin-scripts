@@ -3,5 +3,6 @@
     "description": "A script that displays text with the current column index and name in a text layer with a separator.",
     "version": "1.0.0",
     "author": "Benoît Lahoz",
-    "category": "Text"
+    "category": "Text",
+    "install": true
 }
