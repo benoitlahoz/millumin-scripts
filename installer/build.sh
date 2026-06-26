@@ -2,8 +2,12 @@
 
 set -e
 
-SCRIPTS_DIR="../scripts"
-BUILD_DIR="build"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+SCRIPTS_DIR="$ROOT_DIR/scripts"
+
+BUILD_DIR="$ROOT_DIR/installer/build"
 PKGS_DIR="$BUILD_DIR/pkgs"
 DIST_DIR="$BUILD_DIR/dist"
 REGISTRY_DIR="$BUILD_DIR/registry"
