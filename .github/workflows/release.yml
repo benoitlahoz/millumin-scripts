@@ -1,0 +1,45 @@
+name: Build Millumin Scripts Installer
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "scripts/**"
+      - "build.sh"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          brew install jq
+
+      - name: Make build script executable
+        run: chmod +x installer/build.sh
+
+      - name: Run build
+        run: ./installer/build.sh
+
+      - name: Get version
+        id: version
+        run: |
+          echo "VERSION=$(date +%Y.%m.%d.%H%M)" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          name: Millumin Scripts v${{ steps.version.outputs.VERSION }}
+          files: |
+            installer/build/dist/*.pkg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

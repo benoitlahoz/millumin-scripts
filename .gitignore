@@ -1,1 +1,6 @@
+# Internal
+/installer/build
+private-*
+
+#MacOS
 .DS_Store
