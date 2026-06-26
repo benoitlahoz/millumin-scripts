@@ -37,6 +37,7 @@ jobs:
             - name: Import certificate
               env:
                   MAC_CERTIFICATE: ${{ secrets.MAC_CERTIFICATE }}
+                  MAC_CERTIFICATE_PASSWORD: ${{ secrets.MAC_CERTIFICATE_PASSWORD }}
               run: |
                   echo "$MAC_CERTIFICATE" | base64 --decode > cert.p12
 
@@ -46,7 +47,7 @@ jobs:
 
                   security import cert.p12 \
                       -k build.keychain \
-                      -P "" \
+                      -P "$MAC_CERTIFICATE_PASSWORD" \
                       -T /usr/bin/productsign \
                       -T /usr/bin/codesign
 
