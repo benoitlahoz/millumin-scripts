@@ -6,13 +6,19 @@ A collection of JavaScript scripts for [Millumin](https://www.millumin.com) 5+.
 
 ### Manual
 
-Copy the scripts from the `Scripts` folder to:
+1. Copy the scripts from the `scxripts` folder to:
 
 ```
 ~/Library/Millumin/Scripts/io.benoitlahoz.millumin.scripts/
 ```
 
 Or in the root folder, or any other subfolder of `~/Library/Millumin/Scripts/` (e.g. `~/Library/Millumin/Scripts/MyScripts/`).
+
+1. Copy the libraries from the `libs` folder to:
+
+```
+~/Library/Application Support/io.benoitlahoz.millumin.scripts/libs/
+```
 
 ### Automatic 
 
