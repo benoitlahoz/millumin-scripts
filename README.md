@@ -4,6 +4,18 @@ A collection of JavaScript scripts for [Millumin](https://www.millumin.com) 5+.
 
 ## Installation
 
+### Manual
+
+Copy the scripts from the `Scripts` folder to:
+
+```
+~/Library/Millumin/Scripts/io.benoitlahoz.millumin.scripts/
+```
+
+... or any other subfolder of `~/Library/Millumin/Scripts/` (e.g. `~/Library/Millumin/Scripts/MyScripts/`).
+
+### Automatic 
+
 Download the latest installer from the [Releases](../../releases) page. The `.pkg` is signed and notarized — just double-click and follow the on-screen instructions.
 
 Scripts are installed to:
