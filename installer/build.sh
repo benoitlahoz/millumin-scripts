@@ -185,7 +185,7 @@ productbuild \
 echo ""
 echo "✅ DONE"
 echo "📦 Output:"
-echo "   $DIST_DIR/Millumin-Scripts.pkg"
+echo "   $DIST_DIR/Millumin-Scripts-Unsigned.pkg"
 
 echo ""
 echo "📁 Registry created at:"

@@ -51,10 +51,12 @@ jobs:
                       -T /usr/bin/productsign \
                       -T /usr/bin/codesign
 
-                  security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+                  security set-key-partition-list \
+                      -S apple-tool:,apple: \
+                      -s -k "" build.keychain
 
             # -------------------------
-            # DEBUG IDENTITIES (IMPORTANT)
+            # DEBUG IDENTITIES
             # -------------------------
             - name: List identities
               run: security find-identity -v -p basic
@@ -70,8 +72,33 @@ jobs:
 
                   productsign \
                       --sign "$IDENTITY" \
+                      installer/build/dist/Millumin-Scripts-Unsigned.pkg \
+                      installer/build/dist/Millumin-Scripts.pkg
+
+            # -------------------------
+            # NOTARIZE PACKAGE
+            # -------------------------
+            - name: Notarize package
+              env:
+                  ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+                  ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+                  ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+              run: |
+                  xcrun notarytool submit \
                       installer/build/dist/Millumin-Scripts.pkg \
-                      installer/build/dist/Millumin-Scripts-signed.pkg
+                      --key "$ASC_PRIVATE_KEY" \
+                      --key-id "$ASC_KEY_ID" \
+                      --issuer "$ASC_ISSUER_ID" \
+                      --wait
+
+                  echo "Notarization completed"
+
+            # -------------------------
+            # STAPLE NOTARIZATION
+            # -------------------------
+            - name: Staple notarization
+              run: |
+                  xcrun stapler staple installer/build/dist/Millumin-Scripts.pkg
 
             # -------------------------
             # VERSION
@@ -90,6 +117,6 @@ jobs:
                   tag_name: v${{ steps.version.outputs.VERSION }}
                   name: Millumin Scripts v${{ steps.version.outputs.VERSION }}
                   files: |
-                      installer/build/dist/Millumin-Scripts-signed.pkg
+                      installer/build/dist/Millumin-Scripts.pkg
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
