@@ -31,6 +31,34 @@ jobs:
             - name: Run build
               run: ./installer/build.sh
 
+            # -------------------------
+            # SIGN PACKAGE
+            # -------------------------
+            - name: Import certificate
+              env:
+                  MAC_CERTIFICATE: ${{ secrets.MAC_CERTIFICATE }}
+              run: |
+                  echo "$MAC_CERTIFICATE" | base64 --decode > cert.p12
+
+                  security create-keychain -p "" build.keychain
+                  security default-keychain -s build.keychain
+                  security unlock-keychain -p "" build.keychain
+
+                  security import cert.p12 \
+                    -k build.keychain \
+                    -P "" \
+                    -T /usr/bin/productsign \
+                    -T /usr/bin/codesign
+
+                  security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+
+            - name: Sign package
+              run: |
+                  productsign \
+                    --sign "Developer ID Installer: Benoit LAHOZ (2997NPQWS5)" \
+                    installer/build/dist/Millumin-Scripts.pkg \
+                    installer/build/dist/Millumin-Scripts-signed.pkg
+
             - name: Get version
               id: version
               run: |
@@ -42,6 +70,6 @@ jobs:
                   tag_name: v${{ steps.version.outputs.VERSION }}
                   name: Millumin Scripts v${{ steps.version.outputs.VERSION }}
                   files: |
-                      installer/build/dist/*.pkg
+                      installer/build/dist/Millumin-Scripts-signed.pkg
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
