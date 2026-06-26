@@ -1,0 +1,7 @@
+{
+    "name": "Text with Column Name",
+    "description": "A script that displays text with the current column name in a text layer.",
+    "version": "1.0.0",
+    "author": "Benoît Lahoz",
+    "category": "Text"
+}
