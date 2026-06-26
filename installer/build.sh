@@ -16,9 +16,9 @@ IDENTIFIER_PREFIX="io.benoitlahoz.millumin.scripts"
 
 INSTALL_NAMESPACE="io.benoitlahoz.millumin.scripts"
 
-USER_LIB="$HOME/Library/Millumin"
-USER_SCRIPTS_DIR="$USER_LIB/Scripts/$INSTALL_NAMESPACE"
-USER_REGISTRY_DIR="$HOME/Library/Application Support/$IDENTIFIER_PREFIX"
+# ✅ Chemin relatif au home (sans $HOME) pour pkgbuild
+USER_SCRIPTS_DIR="Library/Millumin/Scripts/$INSTALL_NAMESPACE"
+USER_REGISTRY_DIR="Library/Application Support/$IDENTIFIER_PREFIX"
 
 echo "🚀 Millumin Scripts Builder starting..."
 echo "📂 ROOT: $ROOT_DIR"
@@ -36,7 +36,7 @@ cat > "$DISTRIBUTION_FILE" <<EOF
 <installer-gui-script minSpecVersion="2">
 <title>Millumin Scripts Installer</title>
 <options customize="always" require-scripts="false"/>
-<domains enable_anywhere="true"/>
+<domains enable_anywhere="false" enable_currentUserHome="true" enable_localSystem="false"/>
 <choices-outline>
 EOF
 
@@ -82,9 +82,9 @@ for dir in $FOUND_DIRS; do
     fi
 
     # -------------------------
-    # REAL FILE NAME (IMPORTANT FIX)
+    # REAL FILE NAME
     # -------------------------
-    JS_FILENAME=$(basename "$JS_FILE")   # 👈 KEEP ORIGINAL NAME
+    JS_FILENAME=$(basename "$JS_FILE")
 
     PACKAGE_ID="$IDENTIFIER_PREFIX.$JS_FILENAME"
 
@@ -99,13 +99,30 @@ for dir in $FOUND_DIRS; do
     rm -rf "$TMP_ROOT"
     mkdir -p "$TMP_ROOT"
 
-    # 👉 FLAT INSTALL WITH ORIGINAL NAME
     cp "$JS_FILE" "$TMP_ROOT/$JS_FILENAME"
+
+    # -------------------------
+    # PREINSTALL SCRIPT
+    # Crée le dossier de destination s'il n'existe pas,
+    # sans toucher à ce qui existe déjà.
+    # -------------------------
+    SCRIPTS_DIR_PKG="$PKGS_DIR/scripts_${JS_FILENAME}"
+    mkdir -p "$SCRIPTS_DIR_PKG"
+
+    cat > "$SCRIPTS_DIR_PKG/preinstall" <<PREINSTALL
+#!/bin/bash
+DEST="\$HOME/Library/Millumin/Scripts/$INSTALL_NAMESPACE"
+mkdir -p "\$DEST"
+exit 0
+PREINSTALL
+
+    chmod +x "$SCRIPTS_DIR_PKG/preinstall"
 
     pkgbuild \
         --root "$TMP_ROOT" \
         --identifier "$PACKAGE_ID" \
         --version "$VERSION" \
+        --scripts "$SCRIPTS_DIR_PKG" \
         --install-location "$USER_SCRIPTS_DIR" \
         "$COMPONENT_PKG"
 
