@@ -12,11 +12,11 @@ Copy the scripts from the `Scripts` folder to:
 ~/Library/Millumin/Scripts/io.benoitlahoz.millumin.scripts/
 ```
 
-... or any other subfolder of `~/Library/Millumin/Scripts/` (e.g. `~/Library/Millumin/Scripts/MyScripts/`).
+Or in the root folder, or any other subfolder of `~/Library/Millumin/Scripts/` (e.g. `~/Library/Millumin/Scripts/MyScripts/`).
 
 ### Automatic 
 
-Download the latest installer from the [Releases](../../releases) page. The `.pkg` is signed and notarized — just double-click and follow the on-screen instructions.
+Download the latest installer from the [Releases](../../releases) page. 
 
 Scripts are installed to:
 
